@@ -1,0 +1,85 @@
+#!/usr/bin/env node
+
+'use strict'
+
+const fs = require('fs')
+const MockProxyServer = require('../server/server')
+const logger = require('../server/logger')
+const argv = require('optimist').boolean('cors').argv
+
+const pkg = require('../package.json')
+
+if (argv.help || argv.h) {
+  console.log([
+    'usage: mock-proxy [remoteAddress] [options]',
+    '-p [port]        Port to use, default is 8998',
+    '-https           is remote server use https, default is false',
+    '-l [pattern]     local files pattern, default is [**.*.js, **/*.css, **/*.html]',
+    '-d [directory]   root directory path, default is "."',
+    '-c [path]        config file to use'
+  ].join('\n'))
+  process.exit()
+}
+if (argv.version || argv.v) {
+  logger.normal('mock-proxy-server version ' + pkg.version)
+  process.exit()
+}
+
+if (!argv._[0]) {
+  logger.error('remote address is required')
+  process.exit()
+}
+
+const cliConfig = {
+  remote: argv._[0],
+  port: argv.p,
+  directory: argv.d,
+  localFiles: argv.l ? argv.l.trim().split(',') : null,
+  remoteHttps: !!argv.https
+}
+const configPath = argv.c
+
+let config
+if (configPath) {
+  const isExist = fs.existsSync(configPath)
+  if (!isExist) {
+    logger.error('config file not exist')
+    process.exit()
+  } else {
+    const configStr = fs.readFileSync(configPath)
+    config = JSON.parse(configStr)
+  }
+} else {
+  config = {}
+}
+
+['remote', 'port', 'directory', 'localFiles', 'remoteHttps'].forEach(n => {
+  if (!config.hasOwnProperty(n) && cliConfig[n]) {
+    config[n] = cliConfig[n]
+  }
+})
+config.openBrowser = true
+
+new MockProxyServer(config)
+
+if (process.platform === 'win32') {
+  require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+  }).on('SIGINT', function () {
+    process.emit('SIGINT')
+  })
+}
+
+process.on('SIGINT', function () {
+  logger.error('server stopped.')
+  process.exit()
+})
+
+process.on('SIGTERM', function () {
+  logger.error('server stopped.')
+  process.exit()
+})
+
+
+

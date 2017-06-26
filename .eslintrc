@@ -1,0 +1,58 @@
+{
+    "parserOptions": {
+            "ecmaVersion": 6,
+            "sourceType": "module",
+            "ecmaFeatures": {
+            }
+    },
+    "env": {
+        "node": true
+    },
+    "ecmaFeatures": {
+        "modules": true,
+        "classes": true,
+        "blockBindings": true,
+        "arrowFunctions": true,
+        "spread": true,
+        "restParams": true,
+        "defaultParams": true,
+        "destructuring": true,
+        "forOf": true,
+        "generators": true,
+
+        "templateStrings": true,
+
+        "binaryLiterals": false,
+        "octalLiterals": false,
+        "unicodeCodePointEscapes": false,
+        "regexUFlag": false,
+        "regexYFlag": false,
+
+        "superInFunctions": false,
+        "objectLiteralComputedProperties": false,
+        "objectLiteralShorthandMethods": false,
+        "objectLiteralShorthandProperties": false,
+
+        "objectLiteralDuplicateProperties": false,
+        "globalReturn": false
+    },
+    "rules": {
+        "semi": ["error", "never"],
+        "quotes": ["error", "single","avoid-escape"],
+        "no-use-before-define": "warn",
+        "curly": ["error", "multi-line"],
+        "no-underscore-dangle": "off",
+        "no-comma-dangle": "off",
+        "new-parens": "off",
+        "no-proto": "off",
+        "global-strict": "off",
+        "no-constant-condition": "warn",
+        "no-spaced-func": "warn",
+        "key-spacing": ["warn", {"beforeColon": false, "afterColon": true} ],
+        "new-cap": ["error", { "capIsNew": false }],
+        "block-scoped-var": "error",
+        "keyword-spacing": ["error", {"before": true, "after": true}],
+        "space-before-blocks": ["error", "always"],
+        "space-before-function-paren": ["error", "always"]
+    }
+}

@@ -1,0 +1,11 @@
+{
+  "remote": "192.168.1.39:8081",
+  "port": 27777,
+  "directory": ".",
+  "localFiles": ["/dist/**/*.*"],
+  "redirectPath": [
+    { "path": "/", "file": "index.html" }
+  ],
+  "remoteHttps": false,
+  "proxyMode": true
+}

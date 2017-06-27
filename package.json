@@ -1,13 +1,13 @@
 {
   "name": "mock-proxy-server",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "description": "a mock-proxy-server",
   "repository": {
     "type": "git",
     "url": "git://github.com/lostpig/MockProxyServer.git"
   },
   "scripts": {
-    "test": "node ./bin/mock-proxy localhost:8080"
+    "test": "node ./bin/mock-proxy 192.168.1.39:8081 -p 8088"
   },
   "files": [
     "server",

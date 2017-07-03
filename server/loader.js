@@ -37,12 +37,9 @@ const loadLocal = (urlObj, rootPath) => new Promise((resolve, reject) => {
   }
 })
 
-const isLocalhost = (remoteUrl) => {
-  return remoteUrl.hostname === 'localhost' || remoteUrl.hostname === '127.0.0.1' || remoteUrl.hostname === '0.0.0.0'
-}
 const requestRemote = (req, config) => {
   const remoteUrl = libUrl.parse(req.url)
-  if ((config.proxyMode && remoteUrl.host === config.remote) || (!config.proxyMode && isLocalhost(remoteUrl))) {
+  if ((config.proxyMode && remoteUrl.host === config.remote) || !config.proxyMode) {
     remoteUrl.protocol = config.remoteHttps ? 'https:' : 'http:'
     remoteUrl.host = config.remote
   }

@@ -1,7 +1,7 @@
 {
-  "name": "mock-proxy-server",
-  "version": "0.1.6",
-  "description": "a mock-proxy-server",
+  "name": "moproxy-server",
+  "version": "0.1.10",
+  "description": "moproxy-server",
   "repository": {
     "type": "git",
     "url": "git://github.com/lostpig/MockProxyServer.git"
@@ -27,6 +27,6 @@
   "author": "Lostpigz",
   "license": "MIT",
   "bin": {
-    "mock-proxy": "./bin/mock-proxy"
+    "moproxy": "./bin/mock-proxy"
   }
 }

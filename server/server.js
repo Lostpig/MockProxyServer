@@ -19,7 +19,8 @@ const defaultConfig = {
   remoteHttps: false,
   localFiles: [
     '**/*.js', '**/*.css', '**/*.html'
-  ]
+  ],
+  redirectPath: []
 }
 
 class MockProxyServer {
@@ -63,6 +64,14 @@ class MockProxyServer {
   makeLocalMatch () {
     const list = this.config.localFiles
     this.matchList = list.map(pattern => new minimatch.Minimatch(pattern))
+    
+    const redirectPath = this.config.redirectPath
+    this.redirectPathes = redirectPath.map(item => {
+      return {
+        matcher: new minimatch.Minimatch(item.path),
+        file: item.file
+      }
+    })
   }
   proxyHttps () {
     this.server.on('connect', (req, client, head) => {
@@ -128,20 +137,23 @@ class MockProxyServer {
       })
   }
   isLocalFile (url) {
+    let result = false
     for (let i = 0; i < this.matchList.length; i++) {
       if (this.matchList[i].match(url.pathname)) {
-        return true
+        result = true
+        break
       }
     }
-    if (this.config.redirectPath && this.config.redirectPath.length > 0) {
-      for (let i = 0; i < this.config.redirectPath.length; i++) {
-        if (this.config.redirectPath[i].path === url.pathname) {
-          url.pathname = this.config.redirectPath[i].file
-          return true
+    if (this.redirectPathes.length > 0) {
+      for (let i = 0; i < this.redirectPathes.length; i++) {
+        if (this.redirectPathes[i].matcher.match(url.pathname)) {
+          url.pathname = this.redirectPathes[i].file
+          result = true
+          break
         }
       }
     }
-    return false
+    return result
   }
 }
 

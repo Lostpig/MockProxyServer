@@ -50,6 +50,8 @@ const requestRemote = (req, config) => {
       reqbody = Buffer.concat([reqbody, d])
     })
       .on('end', () => {
+        req.headers.host = remoteUrl.host
+        
         let option = {
           method: req.method,
           url: libUrl.format(remoteUrl),

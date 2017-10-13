@@ -13,7 +13,7 @@ const ROOTPATH = process.cwd()
 
 if (argv.help || argv.h) {
   console.log([
-    'usage: mock-proxy [remoteAddress] [options]',
+    'usage: moproxy [remoteAddress] [options]',
     '-p [port]        Port to use, default is 8998',
     '-l [pattern]     local files glob pattern, default is [**/*.js, **/*.css, **/*.html]',
     '-d [directory]   root directory path, default is "."',
@@ -24,7 +24,7 @@ if (argv.help || argv.h) {
   process.exit()
 }
 if (argv.version || argv.v) {
-  logger.normal('mock-proxy-server version ' + pkg.version)
+  logger.normal('moproxy-server version ' + pkg.version)
   process.exit()
 }
 if (argv.c && typeof argv.c === 'string' && argv.c.trim() === 'help') {
@@ -45,8 +45,8 @@ if (argv.c && typeof argv.c === 'string' && argv.c.trim() === 'help') {
 }
 
 
-if (!argv._[0]) {
-  logger.error('remote address is required')
+if (!argv._[0] && !argv.c) {
+  logger.error('remote address or config file is required')
   process.exit()
 }
 

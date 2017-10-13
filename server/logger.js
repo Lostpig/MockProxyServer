@@ -12,21 +12,21 @@ const getStyle = (...styles) => {
 
 module.exports = {
   exception: (message) => {
-    console.log('[MockProxyServer]' + getStyle('bgRed', 'bold')(message))
+    console.log('[moproxy]' + getStyle('bgRed', 'bold')(message))
   },
   error: (message) => {
-    console.log('[MockProxyServer]' + getStyle('red')(message))
+    console.log('[moproxy]' + getStyle('red')(message))
   },
   warn: (message) => {
-    console.log('[MockProxyServer]' + getStyle('yellow')(message))
+    console.log('[moproxy]' + getStyle('yellow')(message))
   },
   success: (message) => {
-    console.log('[MockProxyServer]' + getStyle('green')(message))
+    console.log('[moproxy]' + getStyle('green')(message))
   },
   custom: (message, ...styles) => {
-    console.log('[MockProxyServer]' + getStyle(...styles)(message))
+    console.log('[moproxy]' + getStyle(...styles)(message))
   },
   normal: (message) => {
-    console.log('[MockProxyServer]' + message)
+    console.log('[moproxy]' + message)
   }
 }

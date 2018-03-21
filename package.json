@@ -1,6 +1,6 @@
 {
   "name": "moproxy-server",
-  "version": "0.1.10",
+  "version": "0.1.15",
   "description": "moproxy-server",
   "repository": {
     "type": "git",
@@ -21,7 +21,8 @@
     "minimatch": "^3.0.4",
     "opn": "^5.1.0",
     "optimist": "^0.6.0",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "zlib": "^1.0.5"
   },
   "devDependencies": {},
   "author": "Lostpigz",

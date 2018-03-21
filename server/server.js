@@ -29,7 +29,7 @@ class MockProxyServer {
       throw new Error('must set remote address')
     }
     if (config.directory) {
-      this.root = path.join(ROOTPATH, config.directory)
+      this.root = path.resolve(ROOTPATH, config.directory)
     }
     else {
       this.root = ROOTPATH
@@ -127,6 +127,11 @@ class MockProxyServer {
         }
         logFunc(`<${isLocal ? 'File' : result.statusCode}>:${url.path}`)
 
+        if (this.config.cors) {
+          result.headers['Access-Control-Allow-Origin'] = '*'
+          result.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Range'
+        }
+
         response.writeHead(result.statusCode, result.headers)
         response.end(result.content)
       })
@@ -144,7 +149,7 @@ class MockProxyServer {
         break
       }
     }
-    if (this.redirectPathes.length > 0) {
+    if (!result && this.redirectPathes.length > 0) {
       for (let i = 0; i < this.redirectPathes.length; i++) {
         if (this.redirectPathes[i].matcher.match(url.pathname)) {
           url.pathname = this.redirectPathes[i].file

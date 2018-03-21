@@ -17,6 +17,7 @@ if (argv.help || argv.h) {
     '-p [port]        Port to use, default is 8998',
     '-l [pattern]     local files glob pattern, default is [**/*.js, **/*.css, **/*.html]',
     '-d [directory]   root directory path, default is "."',
+    '--cors           is enable CORS, default is false',
     '--https          is remote server use https, default is false',
     '--proxy          start server at proxy mode, default is false',
     '-c [path]        config json file to use, press "-c help" to view config content'
@@ -36,6 +37,7 @@ if (argv.c && typeof argv.c === 'string' && argv.c.trim() === 'help') {
     '  localFiles  : [array]            local files glob pattern, default is [**/*.js, **/*.css, **/*.html]',
     '  redirectPath: [array]            redirect path to local file, default is []',
     '                                   e.g [{ path: "/", file: "dist/index.html" }] ',
+    '  cors        : [boolean]          is enable CORS, default is false',
     '  remoteHttps : [boolean]          is remote server use https, default is false',
     '  proxyMode   : [boolean]          start server at proxy mode, default is false, open when use CAS/SSO ',
     '                                   (maybe you need set plugin on browser)',
@@ -56,7 +58,8 @@ const cliConfig = {
   directory: argv.d,
   localFiles: argv.l ? argv.l.trim().split(',') : null,
   remoteHttps: !!argv.https,
-  proxyMode: !!argv.proxy
+  proxyMode: !!argv.proxy,
+  cors: !!argv.cors
 }
 let configPath
 if (argv.c && typeof argv.c === 'string') {
@@ -65,25 +68,32 @@ if (argv.c && typeof argv.c === 'string') {
 
 let config
 if (configPath) {
-  configPath = path.join(ROOTPATH, configPath)
+  configPath = path.resolve(ROOTPATH, configPath)
   const isExist = fs.existsSync(configPath)
   if (!isExist) {
     logger.error('config file not exist')
     process.exit()
   } else {
-    const configStr = fs.readFileSync(configPath)
-    config = JSON.parse(configStr)
+    if (configPath.endsWith('.js')) {
+      config = require(configPath)
+    } else {
+      const configStr = fs.readFileSync(configPath)
+      config = JSON.parse(configStr)
+    }
   }
 } else {
   config = {}
 
-  ;['remote', 'port', 'directory', 'localFiles', 'remoteHttps', 'proxyMode'].forEach(n => {
+  ;['remote', 'port', 'directory', 'localFiles', 'remoteHttps', 'cors', 'proxyMode'].forEach(n => {
     if (!config.hasOwnProperty(n) && cliConfig[n]) {
       config[n] = cliConfig[n]
     }
   })
 }
-config.openBrowser = !config.proxyMode
+if (!config.proxyMode) {
+  config.openBrowser = typeof config.openBrowser === 'undefined' ? true : config.openBrowser
+}
+
 
 new MockProxyServer(config)
 

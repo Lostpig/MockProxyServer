@@ -26,6 +26,7 @@ moproxy 192.168.1.1:80 -p 8888
 >       默认为**/*.js, **/*.css, **/*.html；如有较复杂的匹配模式，建议使用配置文件
 > + -d  本地文件相对根路径，默认为当前路径
 > + --https  如远程服务器使用https，则需要配置该项
+> + --cors   启用CORS跨域,启用后会在响应中添加相关http头
 > + -v 或 --version  输出当前安装的mock-proxy-server版本号
 > + -h 或 --help  输出帮助信息
 > + -c 指定配置文件，必须为json格式文件；如指定了配置文件，则忽略包括remoteAddress在内的一切配置参数
@@ -51,6 +52,25 @@ moproxy 192.168.1.1:80 -p 8888
 
 
 ## changelog
+### v0.1.14
++ 添加了预处理机制的支持
+> 需要使用`.js`格式的config文件,并使用preProcess配置项,preProcess为一个函数
+> preProcess接收参数(url, result),并需要返回处理后的result
+> url为当前请求路径字符串,result为一个{ statusCode, headers, content }
+> statusCode 响应状态码
+> headers 响应头
+> content 响应体,如果是js,json,html就为String,否则为Buffer
+
+### v0.1.13
++ 引入zlib，增加对gzip压缩流的支持
+
+### v0.1.12
++ 修改了request请求方式，以支持https转发
++ 添加了js格式配置文件的支持
+
+### v0.1.11
++ 添加cors支持,以及相关配置项
+
 ### v0.1.10
 + 修改log信息文本
 

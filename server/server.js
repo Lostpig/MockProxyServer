@@ -117,6 +117,15 @@ class MockProxyServer {
       promise = loader.remote(request, this.config)
     }
 
+    if (this.config.lag && this.config.lag > 0) {
+      const orgPromise = promise
+      promise = new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(orgPromise)
+        }, this.config.lag)
+      })
+    }
+    
     promise
       .then((result) => {
         let logFunc = logger.success
